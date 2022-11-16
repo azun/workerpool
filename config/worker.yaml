@@ -1,0 +1,4 @@
+loglevel: warn
+redis: redis:6379
+worker:
+  concurrency: 4

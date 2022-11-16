@@ -1,0 +1,68 @@
+// package main
+
+// import (
+// 	"sync"
+// 	"testing"
+
+// 	"github.com/sirupsen/logrus"
+// )
+
+// func BenchmarkSingleConsumer(b *testing.B) {
+// 	run(b, 1)
+// }
+
+// func Benchmark10Consumers(b *testing.B) {
+// 	logrus.SetLevel(logrus.WarnLevel)
+
+// 	// b.Run("produce", func(b *testing.B) {
+// 	// 	q := NewQueue()
+// 	// 	task := Task{
+// 	// 		Work: "doSomething",
+// 	// 	}
+// 	// 	for i := 0; i < b.N; i++ {
+// 	// 		q.Queue(task)
+// 	// 	}
+
+// 	// })
+
+// 	b.Run("consume", func(b *testing.B) {
+// 		b.SetParallelism(64)
+// 		b.RunParallel(func(pb *testing.PB) {
+// 			w := NewWorker()
+// 			for pb.Next() {
+// 				w.Work()
+// 			}
+// 		})
+// 	})
+// }
+
+// func run(b *testing.B, consumers int) {
+
+// 	q := NewQueue()
+
+// 	var wg sync.WaitGroup
+
+// 	wg.Add(consumers)
+// 	for i := 0; i < consumers; i++ {
+// 		w := NewWorker()
+
+// 		go consume(w, b.N/consumers, &wg)
+// 	}
+
+// 	task := Task{
+// 		Work: "doSomething",
+// 	}
+// 	for i := 0; i < b.N; i++ {
+// 		q.Queue(task)
+// 	}
+
+// 	wg.Wait()
+// }
+
+// func consume(w Worker, n int, wg *sync.WaitGroup) {
+// 	defer wg.Done()
+
+// 	for idx := 1; idx < n; idx++ {
+// 		w.Work()
+// 	}
+// }

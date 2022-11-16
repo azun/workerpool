@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  grafana:
+    image: grafana/grafana-oss
+    ports:
+      - '3000:3000'
+    volumes:
+      - "grafana:/var/lib/grafana"
+  prometheus:
+    build: ./prometheus
+    ports:
+      - '9090:9090'
+  redis:
+    image: redislabs/redisearch:latest
+    ports:
+      - '6379:6379'
+  redis-exporter:
+    image: oliver006/redis_exporter
+    ports:
+      - 9121:9121
+    environment:
+      REDIS_ADDR: "redis:6379"
+    links:
+      - redis
+      - prometheus
+  publisher:
+    image: taskmanager:2.0.4
+    command: /go/bin/publisher
+    ports:
+      - '2020:2020'
+  worker:
+    image: taskmanager:2.0.4
+    command: /go/bin/worker
+    ports:
+      - '2021:2021'
+volumes:
+  grafana:
+  
